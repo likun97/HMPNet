@@ -1,0 +1,12 @@
+{
+    "editor.fontSize": 14,
+    "workbench.sideBar.location": "left",
+    "terminal.integrated.fontSize": 14,
+    "editor.tabSize": 4,
+    "editor.rulers": [
+        88,
+        80
+    ],
+    "python.formatting.provider": "black",
+    "ptthon.analysis.typeCheckingMode": "basic",
+}
