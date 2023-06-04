@@ -14,7 +14,7 @@ Simultaneously fusing hyperspectral (HS), multispectral (MS), and panchromatic (
 Recommanded Env: torch1.10+python3.7   
    
 Prepare Dataset
-<!-- update .m files later -->
+*update .m files later*
     
 Run and Eval easily
 ```sh
@@ -22,7 +22,7 @@ cd HMPNet/
 python main_train_hmpnet.py 
 python main_test_hmpnet.py 
 ```
-<!-- some comparatstive methods in dir "./utils/comparative_nets" for reference-->
+*some comparatstive methods in dir "./utils/comparative_nets" for reference*
    
    
 ## Bibtex
