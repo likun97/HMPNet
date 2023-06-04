@@ -1,10 +1,9 @@
 <div align="center">   
    
-# HMPNet
+# HMPNet: Interpretable Model-Driven Deep Network for Hyperspectral, Multispectral, and Panchromatic Image Fusion
 ![target](figs/fig1.png "what we do")
 </div>
    
-This is the implementation of HMPNet, a interpretable model-driven deep network for hyperspectral, multispectral, and panchromatic image fusion.
    
 
 ## Abstract
