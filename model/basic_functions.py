@@ -126,13 +126,6 @@ def upsample_upconv(in_channels=64, out_channels=3, kernel_size=3, stride=1, pad
 # conv (+ normaliation + relu)
 # resblock (ResBlock)
 
-
-# 下面这些没复制过来 -----------------------------------------------------------
-
-# concat
-# sum
-# resdenseblock (ResidualDenseBlock_5C)
-# resinresdenseblock (RRDB)
 # ===================================
 '''
 
