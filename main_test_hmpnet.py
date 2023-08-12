@@ -19,14 +19,14 @@ from utils.metrics import ref_evaluate, no_ref_evaluate
 
 from argparse import ArgumentParser
 parser = ArgumentParser(description='Trainable-Nets')
-parser.add_argument('--Network',      type=str,   default='pro_fusionnet', help='from {fusionnet_v1,2,...  }')
-parser.add_argument('--Dataset',      type=str,   default='CAVE',  help='training dataset {CAVE, Harvard, Chikusei_v2, GF5 }')
+parser.add_argument('--Network', type=str,   default='pro_fusionnet', help='from {fusionnet_v1,2,...  }')
+parser.add_argument('--Dataset', type=str,   default='CAVE',  help='training dataset {CAVE, Harvard, Chikusei_v2, GF5 }')
 parser.add_argument('--testing_epoch', type=int,   default=300, help='select a specific epoch number of trained models') 
 
-parser.add_argument('--gpu_list',        type=str,   default='0',              help='gpu index') 
-parser.add_argument('--trained_epoch',   type=int,   default=301,              help='epoch number of end training')
-parser.add_argument('--model_dir',       type=str,   default='train_models',    help='trained or pre-trained model directory') 
-parser.add_argument('--fusion_test_dir', type=str,   default='fusion_tests',    help='fusion test of the pre-trained model')
+parser.add_argument('--gpu_list', type=str,   default='0', help='gpu index') 
+parser.add_argument('--trained_epoch', type=int,   default=301, help='epoch number of end training')
+parser.add_argument('--model_dir', type=str,   default='train_models', help='trained or pre-trained model directory') 
+parser.add_argument('--fusion_test_dir', type=str,   default='fusion_tests', help='fusion test of the pre-trained model')
 args = parser.parse_args()
 os.environ["CUDA_DEVICE_ORDER"]    = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu_list

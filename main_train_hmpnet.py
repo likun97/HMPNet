@@ -19,17 +19,17 @@ import scipy.io as sio
 from argparse import ArgumentParser
 parser = ArgumentParser(description='Trainable-Nets')
 
-parser.add_argument('--Network',      type=str,   default='pro_fusionnet', help='from {fusionnet_v1,v2...  }')
-parser.add_argument('--Dataset',      type=str,   default='CAVE',  help='training dataset from {CAVE, Harvard, Chikusei_v2 }')
-parser.add_argument('--batch_size',   type=int,   default =10,  help='{CAVE-10; Chikusei-8; GF5_simu-8l;  GF5_real-6}') 
+parser.add_argument('--Network', type=str, default='pro_fusionnet', help='from {fusionnet_v1,v2...  }')
+parser.add_argument('--Dataset', type=str, default='CAVE',  help='training dataset from {CAVE, Harvard, Chikusei_v2 }')
+parser.add_argument('--batch_size', type=int, default =10,  help='{CAVE-10; Chikusei-8; GF5_simu-8l;  GF5_real-6}') 
 
-parser.add_argument('--gpu_list',     type=str,   default ='0',           help='gpu index') 
-parser.add_argument('--learning_rate',type=float, default =5*1e-4,        help='learning rate') 
-parser.add_argument('--WEIGHT_DECAY', type=float, default =1e-8,          help='params of ADAM') 
-parser.add_argument('--end_epoch',    type=int,   default =301,           help='epoch number of end training 351 ')
-parser.add_argument('--start_epoch',  type=int,   default =0,             help='epoch number of start training')
-parser.add_argument('--model_dir',    type=str,   default ='train_models', help='trained or pre-trained model directory') 
-parser.add_argument('--name',         type=str,   default='',             help='renames results.txt to results_name.txt if supplied')
+parser.add_argument('--gpu_list', type=str, default ='0', help='gpu index') 
+parser.add_argument('--learning_rate',type=float, default =5*1e-4, help='learning rate') 
+parser.add_argument('--WEIGHT_DECAY', type=float, default =1e-8, help='params of ADAM') 
+parser.add_argument('--end_epoch', type=int, default =301, help='epoch number of end training 351 ')
+parser.add_argument('--start_epoch', type=int, default =0, help='epoch number of start training')
+parser.add_argument('--model_dir', type=str, default ='train_models', help='trained or pre-trained model directory') 
+parser.add_argument('--name', type=str, default='', help='renames results.txt to results_name.txt if supplied')
 args = parser.parse_args() 
 os.environ["CUDA_DEVICE_ORDER"]    = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu_list

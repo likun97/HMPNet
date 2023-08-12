@@ -82,10 +82,18 @@ class X_PriorNet(nn.Module):
         elif downsample_mode == 'strideconv': downsample_block = Funcs.downsample_strideconv
         else: raise NotImplementedError('downsample mode [{:s}] is not found'.format(downsample_mode))
 
-        self.m_head = Funcs.conv(in_c, nc[0], bias=False, mode='C')
-        self.m_down1 = Funcs.sequential(*[Funcs.ResBlock(nc[0], nc[0], bias=False, mode='C'+act_mode+'C') for _ in range(nb)], downsample_block(nc[0], nc[1], bias=False, mode='2'))
-        self.m_down2 = Funcs.sequential(*[Funcs.ResBlock(nc[1], nc[1], bias=False, mode='C'+act_mode+'C') for _ in range(nb)], downsample_block(nc[1], nc[2], bias=False, mode='2'))
-        self.m_body  = Funcs.sequential(*[Funcs.ResBlock(nc[2], nc[2], bias=False, mode='C'+act_mode+'C') for _ in range(nb)])
+        self.m_head  = Funcs.conv(in_c, nc[0], bias=False, mode='C')
+        self.m_down1 = Funcs.sequential(
+            *[Funcs.ResBlock(nc[0], nc[0], bias=False, mode='C'+act_mode+'C') for _ in range(nb)], 
+            downsample_block(nc[0], nc[1], bias=False, mode='2')
+        )
+        self.m_down2 = Funcs.sequential(
+            *[Funcs.ResBlock(nc[1], nc[1], bias=False, mode='C'+act_mode+'C') for _ in range(nb)], 
+            downsample_block(nc[1], nc[2], bias=False, mode='2')
+        )
+        self.m_body  = Funcs.sequential(
+            *[Funcs.ResBlock(nc[2], nc[2], bias=False, mode='C'+act_mode+'C') for _ in range(nb)]
+        )
   
         # upsample
         if upsample_mode   == 'upconv':         upsample_block = Funcs.upsample_upconv
@@ -93,9 +101,16 @@ class X_PriorNet(nn.Module):
         elif upsample_mode == 'convtranspose':  upsample_block = Funcs.upsample_convtranspose
         else: raise NotImplementedError('upsample mode [{:s}] is not found'.format(upsample_mode))
 
-        self.m_up2 = Funcs.sequential(upsample_block(nc[2], nc[1], bias=False, mode='2'), *[Funcs.ResBlock(nc[1], nc[1], bias=False, mode='C'+act_mode+'C') for _ in range(nb)])
-        self.m_up1 = Funcs.sequential(upsample_block(nc[1], nc[0], bias=False, mode='2'), *[Funcs.ResBlock(nc[0], nc[0], bias=False, mode='C'+act_mode+'C') for _ in range(nb)])
+        self.m_up2  = Funcs.sequential(
+            upsample_block(nc[2], nc[1], bias=False, mode='2'), 
+            *[Funcs.ResBlock(nc[1], nc[1], bias=False, mode='C'+act_mode+'C') for _ in range(nb)]
+        )
+        self.m_up1  = Funcs.sequential(
+            upsample_block(nc[1], nc[0], bias=False, mode='2'), 
+            *[Funcs.ResBlock(nc[0], nc[0], bias=False, mode='C'+act_mode+'C') for _ in range(nb)]
+        )
         self.m_tail = Funcs.conv(nc[0], out_c, bias=False, mode='C')
+
 
         self.Rp_conv     = nn.Sequential(
                             nn.Conv2d(out_c,  out_c,  3, stride=1, padding=1),

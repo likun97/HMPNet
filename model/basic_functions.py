@@ -35,10 +35,12 @@ def sequential(*args):
 # =================================
 '''
 
-# -------------------------------------------------------
+# -------------------------------
 # strideconv + relu
-# -------------------------------------------------------
-def downsample_strideconv(in_channels=64, out_channels=64, kernel_size=2, stride=2, padding=0, bias=True, mode='2R'):
+# -------------------------------
+def downsample_strideconv(
+    in_channels=64, out_channels=64, kernel_size=2, stride=2, padding=0, bias=True, mode='2R'
+):
     assert len(mode)<4 and mode[0] in ['2', '3', '4'], 'mode examples: 2, 2R, 2BR, 3, ..., 4BR.'
     kernel_size = int(mode[0])
     stride      = int(mode[0])
@@ -48,10 +50,12 @@ def downsample_strideconv(in_channels=64, out_channels=64, kernel_size=2, stride
     return down1
 
 
-# -------------------------------------------------------
+# -------------------------------
 # maxpooling + conv + relu
-# -------------------------------------------------------
-def downsample_maxpool(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=0, bias=True, mode='2R'):
+# -------------------------------
+def downsample_maxpool(
+    in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=0, bias=True, mode='2R'
+):
     assert len(mode)<4 and mode[0] in ['2', '3'], 'mode examples: 2, 2R, 2BR, 3, ..., 3BR.'
     kernel_size_pool = int(mode[0])
     stride_pool      = int(mode[0])
@@ -62,10 +66,12 @@ def downsample_maxpool(in_channels=64, out_channels=64, kernel_size=3, stride=1,
     return sequential(pool, pool_tail)
 
 
-# -------------------------------------------------------
+# -------------------------------
 # averagepooling + conv + relu
-# -------------------------------------------------------
-def downsample_avgpool(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1, bias=True, mode='2R'):
+# -------------------------------
+def downsample_avgpool(
+    in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1, bias=True, mode='2R'
+):
     assert len(mode)<4 and mode[0] in ['2', '3'], 'mode examples: 2, 2R, 2BR, 3, ..., 3BR.'
     kernel_size_pool = int(mode[0])
     stride_pool      = int(mode[0])
@@ -84,10 +90,12 @@ def downsample_avgpool(in_channels=64, out_channels=64, kernel_size=3, stride=1,
 # =================================
 '''
 
-# -------------------------------------------------------
+# -------------------------------
 # convTranspose + relu
-# -------------------------------------------------------
-def upsample_convtranspose(in_channels=64, out_channels=3, kernel_size=2, stride=2, padding=0, bias=True, mode='2R'):
+# -------------------------------
+def upsample_convtranspose(
+    in_channels=64, out_channels=3, kernel_size=2, stride=2, padding=0, bias=True, mode='2R'
+):
     assert len(mode)<4 and mode[0] in ['2', '3', '4'], 'mode examples: 2, 2R, 2BR, 3, ..., 4BR.'
     kernel_size = int(mode[0])
     stride      = int(mode[0])
@@ -96,18 +104,22 @@ def upsample_convtranspose(in_channels=64, out_channels=3, kernel_size=2, stride
     up1         = conv(in_channels, out_channels, kernel_size, stride, padding, bias, mode)
     return up1
 
-# -------------------------------------------------------
+# -------------------------------
 # conv + subp + relu
-# -------------------------------------------------------
-def upsample_pixelshuffle(in_channels=64, out_channels=3, kernel_size=3, stride=1, padding=1, bias=True, mode='2R'):
+# -------------------------------
+def upsample_pixelshuffle(
+    in_channels=64, out_channels=3, kernel_size=3, stride=1, padding=1, bias=True, mode='2R'
+):
     assert len(mode)<4 and mode[0] in ['2', '3', '4'], 'mode examples: 2, 2R, 2BR, 3, ..., 4BR.'
     up1 = conv(in_channels, out_channels * (int(mode[0]) ** 2), kernel_size, stride, padding, bias, mode='C'+mode)
     return up1
 
-# -------------------------------------------------------
+# -------------------------------
 # nearest_upsample + conv + relu
-# -------------------------------------------------------
-def upsample_upconv(in_channels=64, out_channels=3, kernel_size=3, stride=1, padding=1, bias=True, mode='2R'):
+# -------------------------------
+def upsample_upconv(
+    in_channels=64, out_channels=3, kernel_size=3, stride=1, padding=1, bias=True, mode='2R'
+):
     assert len(mode)<4 and mode[0] in ['2', '3'], 'mode examples: 2, 2R, 2BR, 3, ..., 3BR.'
     if mode[0] == '2':
         uc = 'UC'
@@ -133,9 +145,27 @@ def conv(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1, bi
     L = []
     for t in mode:
         if   t == 'C':
-            L.append(nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, stride=stride, padding=padding, bias=bias))
+            L.append(
+                nn.Conv2d(
+                    in_channels=in_channels,
+                    out_channels=out_channels,
+                    kernel_size=kernel_size,
+                    stride=stride,
+                    padding=padding,
+                    bias=bias
+                )
+            )
         elif t == 'T':
-            L.append(nn.ConvTranspose2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size, stride=stride, padding=padding, bias=bias))
+            L.append(
+                nn.ConvTranspose2d(
+                    in_channels=in_channels,
+                    out_channels=out_channels,
+                    kernel_size=kernel_size,
+                    stride=stride,
+                    padding=padding,
+                    bias=bias
+                )
+            )
         elif t == 'B':
             L.append(nn.BatchNorm2d(out_channels, momentum=0.9, eps=1e-04, affine=True))
         elif t == 'I':
@@ -152,7 +182,16 @@ def conv(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1, bi
             L.append(nn.LeakyReLU(negative_slope=1e-1, inplace=False))          
             
         elif t == '1':
-            L.append(nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=1, stride=stride, padding=0, bias=bias))
+            L.append(
+                nn.Conv2d(
+                    in_channels=in_channels,
+                    out_channels=out_channels,
+                    kernel_size=1,
+                    stride=stride,
+                    padding=0,
+                    bias=bias
+                )
+            )
         elif t == '2':
             L.append(nn.PixelShuffle(upscale_factor=2))
         elif t == '3':
@@ -174,9 +213,9 @@ def conv(in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1, bi
             raise NotImplementedError('Undefined type: '.format(t))
     return sequential(*L)
  
-# -------------------------------------------------------
+# -------------------------------
 # Res Block: x + conv(relu(conv(x)))
-# -------------------------------------------------------
+# -------------------------------
 class ResBlock(nn.Module):
     def __init__(self, in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1, bias=True, mode='CRC'):
         super(ResBlock, self).__init__()
@@ -192,9 +231,9 @@ class ResBlock(nn.Module):
         res = self.res(x)
         return x + res
 
-# -------------------------------------------------------
+# -------------------------------
 # Res Block: x + conv(relu(conv(x)))
-# -------------------------------------------------------
+# -------------------------------
 class ResBlock_ablation1(nn.Module):
     def __init__(self, in_channels=64, out_channels=64, kernel_size=3, stride=1, padding=1, bias=True, mode='CRC'):
         super(ResBlock_ablation1, self).__init__()
